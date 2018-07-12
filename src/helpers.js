@@ -6,7 +6,7 @@ const connectToDatabase = async () => {
   const connectAsync = promisify(MongoClient.connect)
 
   try {
-    const client = await connectAsync(config.databaseUrl)
+    const client = await connectAsync(config.databaseUrl, { useNewUrlParser: true })
     const db = client.db(config.databaseName)
     return { client, db }
   } catch (err) {

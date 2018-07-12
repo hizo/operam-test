@@ -62,7 +62,7 @@ const saveToDb = async data => {
   const collection = db.collection('tuples')
 
   try {
-    // await collection.insertMany(data)
+    await collection.insertMany(data)
     log.info('=== Saving to database completed ===')
     client.close()
   } catch (err) {

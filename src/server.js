@@ -46,6 +46,11 @@ const listToTree = list => {
   return root
 }
 
+app.get('*', (req, res, next) => {
+  log.info(`Serving ${req.method} ${req.url}`)
+  next()
+})
+
 app.get('/data', async (req, res) => {
   const { client, db } = await connectToDatabase()
   const collection = db.collection('tuples')
