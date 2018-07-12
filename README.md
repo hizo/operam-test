@@ -2,6 +2,10 @@
 
 ## [Task](task.md)
 
+## Requirements
+
+- node v8 or higher due to use of `util.promisify`
+
 ## Instructions
 
 - start database

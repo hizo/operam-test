@@ -1,9 +1,9 @@
 const bunyan = require('bunyan')
 const fs = require('fs')
 const xml2js = require('xml2js')
-const slug = require('slug')
 const { promisify } = require('util')
 const readFileAsync = promisify(fs.readFile)
+const { connectToDatabase } = require('./helpers')
 
 const log = bunyan.createLogger({
   name: 'operam-test',
@@ -33,7 +33,9 @@ const transformToLinear = data => {
     return result
   }
 
+  log.info('=== Starting to linearize data ===')
   flatten(data)
+  log.info('=== Linearization of data completed ===')
 
   return flattenedArr
 }
@@ -43,20 +45,33 @@ const loadData = async () => {
   const parseStringAsync = promisify(parser.parseString)
 
   try {
+    log.info('=== Starting to load data ===')
     const xmlData = await readFileAsync(__dirname + '/../structure_released.xml')
     const parsedData = await parseStringAsync(xmlData)
+    log.info('=== Loading of data completed ===')
     return parsedData
   } catch (err) {
     log.error('!!! There was an error with loading or parsing data !!!')
     return {}
   }
 }
-;(async () => {
-  log.info('=== Starting to load data ===')
-  const data = await loadData()
-  log.info('=== Loading of data completed ===')
 
-  log.info('=== Starting to linearize data ===')
+const saveToDb = async data => {
+  log.info('=== Saving to database ===')
+  const { client, db } = await connectToDatabase()
+  const collection = db.collection('tuples')
+
+  try {
+    // await collection.insertMany(data)
+    log.info('=== Saving to database completed ===')
+    client.close()
+  } catch (err) {
+    log.error('Error while saving to database.', err)
+  }
+}
+;(async () => {
+  const data = await loadData()
   const transformedData = transformToLinear(data.ImageNetStructure.synset[0])
-  log.info('=== Linearization of data completed ===')
+  await saveToDb(transformedData)
+  log.info('=== Data ingestion completed ===')
 })()
