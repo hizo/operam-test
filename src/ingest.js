@@ -1,15 +1,10 @@
-const bunyan = require('bunyan')
 const fs = require('fs')
 const xml2js = require('xml2js')
 const { promisify } = require('util')
 const readFileAsync = promisify(fs.readFile)
-const { connectToDatabase } = require('./helpers')
+const { connectToDatabase, createLogger } = require('./helpers')
 
-const log = bunyan.createLogger({
-  name: 'operam-test',
-  stream: process.stdout,
-  level: 'trace',
-})
+const log = createLogger()
 
 const transformToLinear = data => {
   const flattenedArr = []

@@ -1,22 +1,17 @@
 const express = require('express')
-const bunyan = require('bunyan')
 const slug = require('slug')
-const { connectToDatabase } = require('./helpers')
+const { connectToDatabase, createLogger } = require('./helpers')
 const config = require('./config')
 
-const log = bunyan.createLogger({
-  name: 'operam-test',
-  stream: process.stdout,
-  level: 'trace',
-})
-
+const log = createLogger()
 const app = express()
 
 const enhanceNode = node => {
   const categories = node.name.split('>')
-  const name = categories.pop().trim()
+  const name = categories.pop()
+  const parentName = categories.length > 0 ? categories.pop() : 'rootNode'
   const id = slug(name)
-  const parentId = categories.length > 0 ? slug(categories.pop()) : 'rootNode'
+  const parentId = slug(parentName)
 
   return {
     ...node,
