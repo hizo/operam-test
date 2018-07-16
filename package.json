@@ -8,7 +8,7 @@
     "start:ingest:dev": "nodemon ./src/ingest.js | bunyan -l trace",
     "start:server": "node ./src/server.js | bunyan -l trace",
     "start:server:dev": "nodemon ./src/server.js | bunyan -l trace",
-    "start:frontend": "exit 0",
+    "start:frontend": "react-scripts start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,10 +23,18 @@
   },
   "homepage": "https://github.com/hizo/operam-test#readme",
   "dependencies": {
+    "axios": "^0.18.0",
     "bunyan": "^1.8.12",
+    "cors": "^2.8.4",
     "express": "^4.16.3",
     "mongodb": "^3.1.1",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-scripts": "1.1.4",
+    "react-sortable-tree": "^2.2.0",
+    "react-sortable-tree-theme-file-explorer": "^1.1.2",
     "slug": "^0.9.1",
+    "styled-components": "^3.3.3",
     "xml2js": "^0.4.19"
   },
   "devDependencies": {

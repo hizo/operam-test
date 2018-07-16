@@ -1,10 +1,13 @@
 const express = require('express')
+const cors = require('cors')
 const slug = require('slug')
 const { connectToDatabase, createLogger } = require('./helpers')
 const config = require('./config')
 
 const log = createLogger()
 const app = express()
+
+app.use(cors())
 
 const enhanceNode = node => {
   const categories = node.name.split('>')
